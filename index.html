@@ -20,13 +20,13 @@
             height: 100vh;
         }
         .container {
-            max-width: 450px;
-            background: rgba(0, 0, 0, 0.8);
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
-        .mine-btn {
+        .button {
             background: linear-gradient(45deg, #ffcc00, #ff6600);
             color: white;
             border: none;
@@ -36,53 +36,64 @@
             cursor: pointer;
             border-radius: 8px;
             transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
         }
-        .mine-btn:hover {
+        .button:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         }
-        .leaderboard {
-            margin-top: 20px;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
+        .section {
+            display: none;
         }
-        #coin-balance {
-            font-size: 22px;
-            font-weight: bold;
-            margin-top: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 8px;
-            display: inline-block;
+        .active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>⛏ Mine Bingo Coins</h2>
-        <p id="coin-balance">Coins: 0</p>
-        <button class="mine-btn" onclick="mineCoin()">Mine Now</button>
-        <h3>🏆 Leaderboard</h3>
-        <ul id="leaderboard" class="leaderboard"></ul>
+        <h2>🎮 Bingo Game Dashboard</h2>
+        
+        <div id="home" class="section active">
+            <p id="coin-balance">Coins: 0</p>
+            <button class="button" onclick="mineCoin()">⛏ Mine Now</button>
+            <button class="button" onclick="showSection('wallet')">💳 Connect Wallet</button>
+            <button class="button" onclick="showSection('tasks')">📜 View Tasks</button>
+            <button class="button" onclick="showSection('leaderboard')">🏆 Leaderboard</button>
+        </div>
+
+        <div id="wallet" class="section">
+            <h3>💳 Connect Your Wallet</h3>
+            <p>Feature coming soon...</p>
+            <button class="button" onclick="showSection('home')">⬅ Back</button>
+        </div>
+        
+        <div id="tasks" class="section">
+            <h3>📜 Daily Tasks</h3>
+            <ul>
+                <li>Mine 10 coins - Reward: +5 coins</li>
+                <li>Invite a friend - Reward: +20 coins</li>
+            </ul>
+            <button class="button" onclick="showSection('home')">⬅ Back</button>
+        </div>
+
+        <div id="leaderboard" class="section">
+            <h3>🏆 Leaderboard</h3>
+            <ul id="leaderboard-list"></ul>
+            <button class="button" onclick="showSection('home')">⬅ Back</button>
+        </div>
     </div>
 
     <script>
         let coins = 0;
         const BOT_TOKEN = "YOUR_ACTUAL_BOT_TOKEN_HERE";
         const CHAT_ID = "YOUR_ACTUAL_CHAT_ID_HERE";
-        
+
         function mineCoin() {
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: "/mine"
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: "/mine" })
             })
             .then(response => response.json())
             .then(data => {
@@ -96,13 +107,18 @@
             fetch("https://alishahjcb.github.io/TelegramWebApp/leaderboard.json")
             .then(response => response.json())
             .then(data => {
-                const leaderboard = document.getElementById("leaderboard");
+                const leaderboard = document.getElementById("leaderboard-list");
                 leaderboard.innerHTML = "";
                 data.forEach((player, index) => {
                     leaderboard.innerHTML += `<li>${index + 1}. ${player.name} - ${player.coins} coins</li>`;
                 });
             })
             .catch(error => console.error("Error loading leaderboard:", error));
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
         }
 
         loadLeaderboard();
