@@ -51,8 +51,9 @@
     </div>
 
     <script>
-        let coins = 0;
-        
+        let coins = parseInt(localStorage.getItem("coins")) || 0;
+        document.getElementById("coin-balance").innerText = `Coins: ${coins}`;
+
         function mineCoin() {
             fetch("https://api.telegram.org/bot8150140919:AAESPIJzz7s0QGgH_zwkS6czpLiqyNoUk78/sendMessage", {
                 method: "POST",
@@ -67,6 +68,7 @@
             .then(response => response.json())
             .then(data => {
                 coins += 1;
+                localStorage.setItem("coins", coins);
                 document.getElementById("coin-balance").innerText = `Coins: ${coins}`;
             })
             .catch(error => console.error("Error:", error));
