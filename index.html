@@ -64,15 +64,17 @@
 
     <script>
         let coins = 0;
+        const BOT_TOKEN = "YOUR_ACTUAL_BOT_TOKEN_HERE";
+        const CHAT_ID = "YOUR_ACTUAL_CHAT_ID_HERE";
         
         function mineCoin() {
-            fetch("https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage", {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    chat_id: "YOUR_CHAT_ID",
+                    chat_id: CHAT_ID,
                     text: "/mine"
                 })
             })
@@ -85,7 +87,7 @@
         }
 
         function loadLeaderboard() {
-            fetch("https://alishahjcb.github.io/Bingo/leaderboard.json")
+            fetch("https://alishahjcb.github.io/TelegramWebApp/leaderboard.json")
             .then(response => response.json())
             .then(data => {
                 const leaderboard = document.getElementById("leaderboard");
