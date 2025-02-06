@@ -1,0 +1,5 @@
+[
+    { "name": "Player1", "coins": 10 },
+    { "name": "Player2", "coins": 8 },
+    { "name": "Player3", "coins": 6 }
+]
