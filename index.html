@@ -6,38 +6,50 @@
     <title>Bingo Mini-App</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             margin: 0;
             padding: 20px;
+            color: white;
         }
         .container {
             max-width: 400px;
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             margin: auto;
         }
         .mine-btn {
-            background-color: #4CAF50;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
             color: white;
             border: none;
             padding: 15px;
             width: 100%;
             font-size: 18px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .mine-btn:hover {
+            opacity: 0.9;
         }
         .leaderboard {
             margin-top: 20px;
             text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
         }
         #coin-balance {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             margin-top: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -51,11 +63,10 @@
     </div>
 
     <script>
-        let coins = parseInt(localStorage.getItem("coins")) || 0;
-        document.getElementById("coin-balance").innerText = `Coins: ${coins}`;
-
+        let coins = 0;
+        
         function mineCoin() {
-            fetch("https://api.telegram.org/bot8150140919:AAESPIJzz7s0QGgH_zwkS6czpLiqyNoUk78/sendMessage", {
+            fetch("https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -68,7 +79,6 @@
             .then(response => response.json())
             .then(data => {
                 coins += 1;
-                localStorage.setItem("coins", coins);
                 document.getElementById("coin-balance").innerText = `Coins: ${coins}`;
             })
             .catch(error => console.error("Error:", error));
